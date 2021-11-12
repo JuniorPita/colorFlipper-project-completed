@@ -16,6 +16,7 @@ let path = {
         html: [sourceFolder + "/*.html", "!" + sourceFolder + "/_*.html"],
         css: sourceFolder + "/scss/style.scss",
         js: sourceFolder + "/js/script.js",
+        hexjs: sourceFolder + "/js/hex.js",
         img: sourceFolder + "/img/**/*.{jpg,gif,ico,webp}",
         fonts: sourceFolder + "/fonts/*.ttf",
         icons: sourceFolder + "/icons/*.{png,svg}",
@@ -99,6 +100,22 @@ function css() {
 
 function js() {
     return src(path.src.js)
+        .pipe(fileinclude())
+        .pipe(dest(path.build.js))
+        .pipe(
+            uglify(),
+        )
+        .pipe(
+            rename({
+                extname: ".min.js",
+            })
+        )
+        .pipe(dest(path.build.js))
+        .pipe(browsersync.stream());
+}
+
+function Hexjs() {
+    return src(path.src.hexjs)
         .pipe(fileinclude())
         .pipe(dest(path.build.js))
         .pipe(
@@ -212,9 +229,10 @@ function clean(params) {
     return del(path.clean);
 }
 
-let build = gulp.series(clean, gulp.parallel(js, css, html, images, fonts, icons));
+let build = gulp.series(clean, gulp.parallel(js, css, html, images, fonts, icons, Hexjs));
 let watch = gulp.parallel(build, watchFiles, browserSync);
 
+exports.hexjs = Hexjs;
 exports.icons = icons;
 exports.fontsStyle = fontsStyle;
 exports.fonts = fonts;
