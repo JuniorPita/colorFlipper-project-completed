@@ -4,7 +4,7 @@ This project use stack:
 3) Gulp (Node.js)
 4) JavaScript (ES6+)
 5) SCSS (SASS)
-6) Media Queries (Responsive Development)
+6) Media Queries (Adaptive Development)
 
 To open a finished website, follow these easy steps:
 1) Copy this repository to any empty folder to your computer with a file with the extension - .zip
